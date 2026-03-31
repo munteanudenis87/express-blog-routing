@@ -10,7 +10,26 @@ router.get('/', function(req, res) {
 
 // show
 router.get('/:id', function(req, res) {
-    res.send('Dettagli post ' + req.params.id);
+    const id = parseInt(req.params.id)
+
+    // cerchiamo il post tramite id
+    const postTrovato = postRouter.find( post => post.id === id);
+
+    // facciamo il controllo
+    if(!postTrovato){
+
+        // imposto lo status 404
+        res.status(404)
+
+        // restituisco un JSON con le altre informazioni
+        return res.json({
+            error: "Not Found",
+            message: "Post non trovato"
+        });
+    }
+
+    // restituisco un JSON con il post trovato
+    res.json(postTrovato);
 });
 
 // store
